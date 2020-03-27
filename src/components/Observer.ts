@@ -169,9 +169,10 @@ export const ValidationObserver = (Vue as withObserverNode).extend({
         this.observers.splice(idx, 1);
       }
     },
-    async validate({ silent = false }: { silent?: boolean } = {}) {
+    async validate({ silent = false, providerName = null }: { silent?: boolean } = {}) {
       const results = await Promise.all([
         ...values(this.refs)
+          .filter((r: any) => providerName || r.id === providerName)
           .filter((r: any) => !r.disabled)
           .map((ref: any) => ref[silent ? 'validateSilent' : 'validate']().then((r: ValidationResult) => r.valid)),
         ...this.observers.filter((o: any) => !o.disabled).map((obs: any) => obs.validate({ silent }))

@@ -2831,7 +2831,7 @@ var ValidationObserver = Vue.extend({
                   __spreadArrays(
                     values(this.refs)
                       .filter(function(r) {
-                        return providerName || r.id === providerName;
+                        return !providerName || r.id === providerName;
                       })
                       .filter(function(r) {
                         return !r.disabled;

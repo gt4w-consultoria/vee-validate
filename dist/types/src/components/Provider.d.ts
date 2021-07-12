@@ -36,11 +36,7 @@ export declare const ValidationProvider: import('vue/types/vue').ExtendedVue<
     validate(...args: any[]): Promise<ValidationResult>;
     validateSilent(): Promise<ValidationResult>;
     setErrors(errors: string[]): void;
-    applyResult({
-      errors,
-      failedRules,
-      regenerateMap
-    }: Pick<ValidationResult, 'errors' | 'failedRules' | 'regenerateMap'>): void;
+    applyResult({ errors, failedRules, regenerateMap }: Omit<ValidationResult, 'valid'>): void;
     registerField(): void;
   },
   {

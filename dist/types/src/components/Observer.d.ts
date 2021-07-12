@@ -101,10 +101,20 @@ export declare const ValidationObserver: import('vue/types/vue').ExtendedVue<
   {
     observe(subscriber: any, kind?: string): void;
     unobserve(id: string, kind?: string): void;
-    validate({ silent, providerName }?: { silent?: boolean | undefined; providerName?: any }): Promise<boolean>;
+    validateWithInfo({
+      silent
+    }?: {
+      silent?: boolean | undefined;
+    }): Promise<{
+      errors: Record<string, string[]>;
+      flags: ValidationFlags;
+      fields: Record<string, ObserverField>;
+      isValid: boolean;
+    }>;
+    validate({ silent }?: { silent?: boolean | undefined }): Promise<boolean>;
     handleSubmit(cb: Function): Promise<any>;
     reset(): void;
-    setErrors(errors: Record<string, string | string[]>): void;
+    setErrors(errors: Record<string, string[] | string>): void;
   },
   unknown,
   {

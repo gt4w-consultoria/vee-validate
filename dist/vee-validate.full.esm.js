@@ -1,6 +1,6 @@
 /**
  * vee-validate v3.2.5
- * (c) 2020 Abdelrahman Awad
+ * (c) 2021 Abdelrahman Awad
  * @license MIT
  */
 import Vue from 'vue';
@@ -1189,11 +1189,12 @@ var Dictionary = /** @class */ (function() {
       message = '{field} is not valid';
     }
     field =
-      ((_h =
+      (_h =
         (_g = (_f = this.container[locale]) === null || _f === void 0 ? void 0 : _f.names) === null || _g === void 0
           ? void 0
-          : _g[field]),
-      _h !== null && _h !== void 0 ? _h : field);
+          : _g[field]) !== null && _h !== void 0
+        ? _h
+        : field;
     return isCallable(message)
       ? message(field, values)
       : interpolate(message, __assign(__assign({}, values), { _field_: field }));
@@ -1217,8 +1218,7 @@ function localize(locale, dictionary) {
     DICTIONARY = new Dictionary('en', {});
     setConfig({
       defaultMessage: function(field, values) {
-        var _a;
-        return DICTIONARY.resolve(field, (_a = values) === null || _a === void 0 ? void 0 : _a._rule_, values || {});
+        return DICTIONARY.resolve(field, values === null || values === void 0 ? void 0 : values._rule_, values || {});
       }
     });
   }
@@ -1509,27 +1509,26 @@ function validate$r(value, rules, options) {
   if (options === void 0) {
     options = {};
   }
-  var _a, _b, _c, _d, _e, _f;
   return __awaiter(this, void 0, void 0, function() {
     var shouldBail, skipIfEmpty, field, result, errors, failedRules, regenerateMap;
-    return __generator(this, function(_g) {
-      switch (_g.label) {
+    return __generator(this, function(_a) {
+      switch (_a.label) {
         case 0:
-          shouldBail = (_a = options) === null || _a === void 0 ? void 0 : _a.bails;
-          skipIfEmpty = (_b = options) === null || _b === void 0 ? void 0 : _b.skipIfEmpty;
+          shouldBail = options === null || options === void 0 ? void 0 : options.bails;
+          skipIfEmpty = options === null || options === void 0 ? void 0 : options.skipIfEmpty;
           field = {
-            name: ((_c = options) === null || _c === void 0 ? void 0 : _c.name) || '{field}',
+            name: (options === null || options === void 0 ? void 0 : options.name) || '{field}',
             rules: normalizeRules(rules),
             bails: shouldBail !== null && shouldBail !== void 0 ? shouldBail : true,
             skipIfEmpty: skipIfEmpty !== null && skipIfEmpty !== void 0 ? skipIfEmpty : true,
             forceRequired: false,
-            crossTable: ((_d = options) === null || _d === void 0 ? void 0 : _d.values) || {},
-            names: ((_e = options) === null || _e === void 0 ? void 0 : _e.names) || {},
-            customMessages: ((_f = options) === null || _f === void 0 ? void 0 : _f.customMessages) || {}
+            crossTable: (options === null || options === void 0 ? void 0 : options.values) || {},
+            names: (options === null || options === void 0 ? void 0 : options.names) || {},
+            customMessages: (options === null || options === void 0 ? void 0 : options.customMessages) || {}
           };
           return [4 /*yield*/, _validate(field, value, options)];
         case 1:
-          result = _g.sent();
+          result = _a.sent();
           errors = [];
           failedRules = {};
           regenerateMap = {};
@@ -1758,7 +1757,7 @@ function _test(field, value, rule) {
  */
 function _generateFieldError(field, value, ruleSchema, ruleName, params) {
   var _a;
-  var message = ((_a = field.customMessages[ruleName]), _a !== null && _a !== void 0 ? _a : ruleSchema.message);
+  var message = (_a = field.customMessages[ruleName]) !== null && _a !== void 0 ? _a : ruleSchema.message;
   var ruleTargets = _getRuleTargets(field, ruleSchema, ruleName);
   var _b = _getUserTargets(field, ruleSchema, ruleName, message),
     userTargets = _b.userTargets,
@@ -1901,7 +1900,7 @@ function normalizeEventValue(value) {
 }
 
 var isTextInput = function(vnode) {
-  var _a, _b;
+  var _a;
   var attrs = ((_a = vnode.data) === null || _a === void 0 ? void 0 : _a.attrs) || vnode.elm;
   // it will fallback to being a text input per browsers spec.
   if (vnode.tag === 'input' && (!attrs || !attrs.type)) {
@@ -1912,7 +1911,7 @@ var isTextInput = function(vnode) {
   }
   return includes(
     ['text', 'password', 'search', 'email', 'tel', 'url', 'number'],
-    (_b = attrs) === null || _b === void 0 ? void 0 : _b.type
+    attrs === null || attrs === void 0 ? void 0 : attrs.type
   );
 };
 // export const isCheckboxOrRadioInput = (vnode: VNode): boolean => {
@@ -1939,21 +1938,21 @@ function findModel(vnode) {
   });
 }
 function findValue(vnode) {
-  var _a, _b, _c;
+  var _a, _b;
   var model = findModel(vnode);
   if (model) {
     return { value: model.value };
   }
   var config = findModelConfig(vnode);
-  var prop = ((_a = config) === null || _a === void 0 ? void 0 : _a.prop) || 'value';
+  var prop = (config === null || config === void 0 ? void 0 : config.prop) || 'value';
   if (
-    ((_b = vnode.componentOptions) === null || _b === void 0 ? void 0 : _b.propsData) &&
+    ((_a = vnode.componentOptions) === null || _a === void 0 ? void 0 : _a.propsData) &&
     prop in vnode.componentOptions.propsData
   ) {
     var propsDataWithValue = vnode.componentOptions.propsData;
     return { value: propsDataWithValue[prop] };
   }
-  if (((_c = vnode.data) === null || _c === void 0 ? void 0 : _c.domProps) && 'value' in vnode.data.domProps) {
+  if (((_b = vnode.data) === null || _b === void 0 ? void 0 : _b.domProps) && 'value' in vnode.data.domProps) {
     return { value: vnode.data.domProps.value };
   }
   return undefined;
@@ -2047,7 +2046,7 @@ function addVNodeListener(vnode, eventName, handler) {
 }
 // Determines if `change` should be used over `input` for listeners.
 function getInputEventName(vnode, model) {
-  var _a, _b;
+  var _a;
   // Is a component.
   if (vnode.componentOptions) {
     var event_1 = (findModelConfig(vnode) || { event: 'input' }).event;
@@ -2055,7 +2054,7 @@ function getInputEventName(vnode, model) {
   }
   // Lazy Models typically use change event
   if (
-    (_b = (_a = model) === null || _a === void 0 ? void 0 : _a.modifiers) === null || _b === void 0 ? void 0 : _b.lazy
+    (_a = model === null || model === void 0 ? void 0 : model.modifiers) === null || _a === void 0 ? void 0 : _a.lazy
   ) {
     return 'change';
   }
@@ -2260,15 +2259,14 @@ function createCommonHandlers(vm) {
 }
 // Adds all plugin listeners to the vnode.
 function addListeners(vm, node) {
-  var _a;
   var value = findValue(node);
   // cache the input eventName.
   vm._inputEventName = vm._inputEventName || getInputEventName(node, findModel(node));
-  onRenderUpdate(vm, (_a = value) === null || _a === void 0 ? void 0 : _a.value);
-  var _b = createCommonHandlers(vm),
-    onInput = _b.onInput,
-    onBlur = _b.onBlur,
-    onValidate = _b.onValidate;
+  onRenderUpdate(vm, value === null || value === void 0 ? void 0 : value.value);
+  var _a = createCommonHandlers(vm),
+    onInput = _a.onInput,
+    onBlur = _a.onBlur,
+    onValidate = _a.onValidate;
   addVNodeListener(node, vm._inputEventName, onInput);
   addVNodeListener(node, 'blur', onBlur);
   // add the validation listeners.
@@ -2814,25 +2812,19 @@ var ValidationObserver = Vue.extend({
         this.observers.splice(idx, 1);
       }
     },
-    validate: function(_a) {
-      var _b = _a === void 0 ? {} : _a,
-        _c = _b.silent,
-        silent = _c === void 0 ? false : _c,
-        _d = _b.providerName,
-        providerName = _d === void 0 ? '' : _d;
+    validateWithInfo: function(_a) {
+      var _b = (_a === void 0 ? {} : _a).silent,
+        silent = _b === void 0 ? false : _b;
       return __awaiter(this, void 0, void 0, function() {
-        var results;
-        return __generator(this, function(_e) {
-          switch (_e.label) {
+        var results, isValid, _c, errors, flags, fields;
+        return __generator(this, function(_d) {
+          switch (_d.label) {
             case 0:
               return [
                 4 /*yield*/,
                 Promise.all(
                   __spreadArrays(
                     values(this.refs)
-                      .filter(function(r) {
-                        return !providerName || r.id === providerName;
-                      })
                       .filter(function(r) {
                         return !r.disabled;
                       })
@@ -2852,13 +2844,39 @@ var ValidationObserver = Vue.extend({
                 )
               ];
             case 1:
-              results = _e.sent();
+              results = _d.sent();
+              isValid = results.every(function(r) {
+                return r;
+              });
+              (_c = computeObserverState.call(this)), (errors = _c.errors), (flags = _c.flags), (fields = _c.fields);
+              this.errors = errors;
+              this.flags = flags;
+              this.fields = fields;
               return [
                 2 /*return*/,
-                results.every(function(r) {
-                  return r;
-                })
+                {
+                  errors: errors,
+                  flags: flags,
+                  fields: fields,
+                  isValid: isValid
+                }
               ];
+          }
+        });
+      });
+    },
+    validate: function(_a) {
+      var _b = (_a === void 0 ? {} : _a).silent,
+        silent = _b === void 0 ? false : _b;
+      return __awaiter(this, void 0, void 0, function() {
+        var isValid;
+        return __generator(this, function(_c) {
+          switch (_c.label) {
+            case 0:
+              return [4 /*yield*/, this.validateWithInfo({ silent: silent })];
+            case 1:
+              isValid = _c.sent().isValid;
+              return [2 /*return*/, isValid];
           }
         });
       });
@@ -2915,6 +2933,7 @@ function prepareSlotProps(vm) {
     errors: vm.errors,
     fields: vm.fields,
     validate: vm.validate,
+    validateWithInfo: vm.validateWithInfo,
     passes: vm.handleSubmit,
     handleSubmit: vm.handleSubmit,
     reset: vm.reset
@@ -2925,7 +2944,12 @@ function createObserverFlags() {
   return __assign(__assign({}, createFlags()), { valid: true, invalid: false });
 }
 function computeObserverState() {
-  var vms = __spreadArrays(values(this.refs), this.observers);
+  var vms = __spreadArrays(
+    values(this.refs),
+    this.observers.filter(function(o) {
+      return !o.disabled;
+    })
+  );
   var errors = {};
   var flags = createObserverFlags();
   var fields = {};
@@ -2953,10 +2977,10 @@ function computeObserverState() {
 }
 
 function withValidation(component, mapProps) {
+  var _a;
   if (mapProps === void 0) {
     mapProps = identity;
   }
-  var _a, _b;
   var options = 'options' in component ? component.options : component;
   var providerOpts = ValidationProvider.options;
   var hoc = {
@@ -2969,23 +2993,22 @@ function withValidation(component, mapProps) {
     inject: providerOpts.inject
   };
   var eventName =
-    ((_b = (_a = options) === null || _a === void 0 ? void 0 : _a.model) === null || _b === void 0
+    ((_a = options === null || options === void 0 ? void 0 : options.model) === null || _a === void 0
       ? void 0
-      : _b.event) || 'input';
+      : _a.event) || 'input';
   hoc.render = function(h) {
     var _a;
-    var _b, _c;
     this.registerField();
     var vctx = createValidationCtx(this);
     var listeners = __assign({}, this.$listeners);
     var model = findModel(this.$vnode);
     this._inputEventName = this._inputEventName || getInputEventName(this.$vnode, model);
     var value = findValue(this.$vnode);
-    onRenderUpdate(this, (_b = value) === null || _b === void 0 ? void 0 : _b.value);
-    var _d = createCommonHandlers(this),
-      onInput = _d.onInput,
-      onBlur = _d.onBlur,
-      onValidate = _d.onValidate;
+    onRenderUpdate(this, value === null || value === void 0 ? void 0 : value.value);
+    var _b = createCommonHandlers(this),
+      onInput = _b.onInput,
+      onBlur = _b.onBlur,
+      onValidate = _b.onValidate;
     mergeVNodeListeners(listeners, eventName, onInput);
     mergeVNodeListeners(listeners, 'blur', onBlur);
     this.normalizedEvents.forEach(function(evt) {
@@ -2997,7 +3020,7 @@ function withValidation(component, mapProps) {
     var props = __assign(
       __assign(
         __assign({}, this.$attrs),
-        ((_a = {}), (_a[prop] = (_c = model) === null || _c === void 0 ? void 0 : _c.value), _a)
+        ((_a = {}), (_a[prop] = model === null || model === void 0 ? void 0 : model.value), _a)
       ),
       mapProps(vctx)
     );

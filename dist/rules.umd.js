@@ -1,6 +1,6 @@
 /**
  * vee-validate v3.2.5
- * (c) 2020 Abdelrahman Awad
+ * (c) 2021 Abdelrahman Awad
  * @license MIT
  */
 (function(global, factory) {
